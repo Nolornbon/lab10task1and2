@@ -52,6 +52,8 @@ namespace lab10task1and2 {
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::ListBox^ listBox1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart1;
+
 
 	private:
 		/// <summary>
@@ -67,6 +69,9 @@ namespace lab10task1and2 {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
 			this->button1 = (gcnew System::Windows::Forms::Button());
@@ -83,10 +88,12 @@ namespace lab10task1and2 {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->chart1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// tabControl1
@@ -152,6 +159,7 @@ namespace lab10task1and2 {
 			// 
 			// tabPage2
 			// 
+			this->tabPage2->Controls->Add(this->chart1);
 			this->tabPage2->Controls->Add(this->pictureBox1);
 			this->tabPage2->Controls->Add(this->listBox1);
 			this->tabPage2->Controls->Add(this->textBox4);
@@ -183,9 +191,9 @@ namespace lab10task1and2 {
 			// 
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->ItemHeight = 16;
-			this->listBox1->Location = System::Drawing::Point(196, 187);
+			this->listBox1->Location = System::Drawing::Point(473, 187);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(261, 260);
+			this->listBox1->Size = System::Drawing::Size(188, 324);
 			this->listBox1->TabIndex = 7;
 			// 
 			// textBox4
@@ -252,6 +260,23 @@ namespace lab10task1and2 {
 			this->label2->TabIndex = 0;
 			this->label2->Text = L"a";
 			// 
+			// chart1
+			// 
+			chartArea1->Name = L"ChartArea1";
+			this->chart1->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->chart1->Legends->Add(legend1);
+			this->chart1->Location = System::Drawing::Point(0, 187);
+			this->chart1->Name = L"chart1";
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Spline;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Series1";
+			this->chart1->Series->Add(series1);
+			this->chart1->Size = System::Drawing::Size(467, 323);
+			this->chart1->TabIndex = 9;
+			this->chart1->Text = L"chart1";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -266,6 +291,7 @@ namespace lab10task1and2 {
 			this->tabPage2->ResumeLayout(false);
 			this->tabPage2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -292,16 +318,19 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	b = Convert::ToDouble(textBox3->Text);
 	k = Convert::ToDouble(textBox4->Text);
 	h = (b - a) / k;
-	listBox1->Items->Add("\t x                           y");
-	listBox1->Items->Add("==============================");
+	listBox1->Items->Add("  x	     y");
+	listBox1->Items->Add("===================");
 	
 	for (i = 0; i <= k; i++) {
 		x = a + i * h;
 		y = pow(3, fabs(sin(x * x - 1)));
-		listBox1->Items->Add("\t" + x.ToString("0.00") + "\t|\t" + y.ToString("0.00"));
-		
+		listBox1->Items->Add(x.ToString("0.00") + "\t|\t" + y.ToString("0.00"));
+		chart1->Series["Series1"]->Points->AddXY(x, y);
 
 	}
+}
+private: System::Void chart1_Click(System::Object^ sender, System::EventArgs^ e) {
+	
 }
 };
 }
